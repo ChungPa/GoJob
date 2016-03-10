@@ -8,9 +8,27 @@ from . import main_blueprint
 
 
 @main_blueprint.route('/')
+@main_blueprint.route('/intro')
 def index():
     return render_template('main/index.html')
 
+
+@main_blueprint.route('/works')
+def works():
+    return render_template('main/worklist.html')
+
+
+@main_blueprint.route('/aboutus')
+def about():
+    return render_template('main/about.html')
+
+
+@main_blueprint.route('/login')
+def login():
+    return render_template('main/login.html')
+
+
+# For Static
 
 @main_blueprint.route('/img/<path:filename>')
 def static_img(filename):
@@ -26,9 +44,11 @@ def static_font(filename):
 def static_fonts(filename):
     return send_from_directory(os.path.join(main_blueprint.static_folder, 'fonts'), filename)
 
+
 @main_blueprint.route('/min/<path:filename>')
 def static_min(filename):
     return send_from_directory(os.path.join(main_blueprint.static_folder, 'min'), filename)
+
 
 @main_blueprint.route('/css/<path:filename>')
 def static_css(filename):

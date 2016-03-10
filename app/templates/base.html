@@ -1,10 +1,61 @@
 <!DOCTYPE html>
 <html>
-    <meta charset="utf-8">
-    <head>{% block head %}{% endblock %}</head>
-</html>
-<body>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1.0, user-scalable=no"/>
+    <meta name="theme-color" content="#2196F3">
+    <title>Sunrin Job World</title>
+
+    <!-- CSS  -->
+    <link href="min/plugin-min.css" type="text/css" rel="stylesheet">
+    <link href="min/custom-min.css" type="text/css" rel="stylesheet" >
+
+    {% block head %}
+    {% endblock %}
+
+</head>
+<body id="top" class="scrollspy">
+
+<!-- Pre Loader -->
+<div id="loader-wrapper">
+    <div id="loader"></div>
+
+    <div class="loader-section section-left"></div>
+    <div class="loader-section section-right"></div>
+
+</div>
+
+<!--Navigation-->
+ <div class="navbar-fixed">
+    <nav id="nav_f" class="default_color" role="navigation">
+        <div class="container">
+            <div class="nav-wrapper">
+            <a href="#" id="logo-container" class="brand-logo">GOOD-JOB</a>
+                <ul class="right hide-on-med-and-down">
+                    <li><a href="/intro">intro</a></li>
+                    <li><a href="/works">Works</a></li>
+                    <li><a href="/aboutus">Maker</a></li>
+                    <li><a href="/login">Login</a></li>
+                </ul>
+                <ul id="nav-mobile" class="side-nav">
+                    <li><a href="/intro">intro</a></li>
+                    <li><a href="/works">Works</a></li>
+                    <li><a href="/aboutus">Maker</a></li>
+                    <li><a href="/login">Login</a></li>
+                </ul>
+            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+            </div>
+        </div>
+    </nav>
+</div>
+
+
 {% block body %}
 {% endblock %}
-</body>
+
+    <!--  Scripts-->
+    <script src="min/plugin-min.js"></script>
+    <script src="min/custom-min.js"></script>
+
+    </body>
 </html>
