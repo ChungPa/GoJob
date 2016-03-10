@@ -7,8 +7,8 @@
     <title>Sunrin Job World</title>
 
     <!-- CSS  -->
-    <link href="min/plugin-min.css" type="text/css" rel="stylesheet">
-    <link href="min/custom-min.css" type="text/css" rel="stylesheet" >
+    <link href="{{ url_for('main.static_min', filename='plugin-min.css') }}" type="text/css" rel="stylesheet">
+    <link href="{{ url_for('main.static_min', filename='custom-min.css') }}" type="text/css" rel="stylesheet" >
 
     {% block head %}
     {% endblock %}
@@ -54,8 +54,8 @@
 {% endblock %}
 
     <!--  Scripts-->
-    <script src="min/plugin-min.js"></script>
-    <script src="min/custom-min.js"></script>
+    <script src="{{ url_for('main.static_min', filename='plugin-min.js') }}"></script>
+    <script src="{{ url_for('main.static_min', filename='custom-min.js') }}"></script>
 
     </body>
 </html>

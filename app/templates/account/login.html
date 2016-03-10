@@ -6,7 +6,7 @@
 
 {% block body %}
     <div class="parallax-container">
-        <div class="parallax"><img src="img/parallax1.png"></div>
+        <div class="parallax"><img src="{{ url_for('main.static_img', filename='parallax1.png') }}"></div>
     </div>
 
 
@@ -14,7 +14,7 @@
         <div class="container">
             <div class="row">
                 <div class="col l6 s12">
-                    <form class="col s12" action="contact.php" method="post">
+                    <form class="col s12" action="login" method="post">
                         <div class="row">
                             <div class="input-field col s6">
                                 <i class="mdi-action-account-circle prefix white-text"></i>
