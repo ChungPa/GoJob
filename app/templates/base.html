@@ -8,7 +8,7 @@
 
     <!-- CSS  -->
     <link href="{{ url_for('main.static_min', filename='plugin-min.css') }}" type="text/css" rel="stylesheet">
-    <link href="{{ url_for('main.static_min', filename='custom-min.css') }}" type="text/css" rel="stylesheet" >
+    <link href="{{ url_for('main.static_min', filename='custom-min.css') }}" type="text/css" rel="stylesheet">
 
     {% block head %}
     {% endblock %}
@@ -26,11 +26,11 @@
 </div>
 
 <!--Navigation-->
- <div class="navbar-fixed">
+<div class="navbar-fixed">
     <nav id="nav_f" class="default_color" role="navigation">
         <div class="container">
             <div class="nav-wrapper">
-            <a href="/intro" id="logo-container" class="brand-logo">GOOD-JOB</a>
+                <a href="/intro" id="logo-container" class="brand-logo">GOOD-JOB</a>
                 <ul class="right hide-on-med-and-down">
                     <li><a href="/intro">intro</a></li>
                     <li><a href="/works">Works</a></li>
@@ -43,7 +43,7 @@
                     <li><a href="/aboutus">Maker</a></li>
                     <li><a href="/login">Login</a></li>
                 </ul>
-            <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
+                <a href="#" data-activates="nav-mobile" class="button-collapse"><i class="mdi-navigation-menu"></i></a>
             </div>
         </div>
     </nav>
@@ -53,9 +53,9 @@
 {% block body %}
 {% endblock %}
 
-    <!--  Scripts-->
-    <script src="{{ url_for('main.static_min', filename='plugin-min.js') }}"></script>
-    <script src="{{ url_for('main.static_min', filename='custom-min.js') }}"></script>
+<!--  Scripts-->
+<script src="{{ url_for('main.static_min', filename='plugin-min.js') }}"></script>
+<script src="{{ url_for('main.static_min', filename='custom-min.js') }}"></script>
 
-    </body>
+</body>
 </html>
