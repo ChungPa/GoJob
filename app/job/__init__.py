@@ -2,6 +2,6 @@
 # -*- coding:utf-8 -*-
 from flask import Blueprint
 
-main_blueprint = Blueprint('main', __name__, static_folder='../static')
+job_blueprint = Blueprint('job', __name__)
 
 from . import views
