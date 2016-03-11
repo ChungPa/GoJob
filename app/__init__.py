@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import sys
+import logging
 
 from flask import Flask
 from flask.ext.sqlalchemy import SQLAlchemy
@@ -9,6 +10,8 @@ from flask.ext.script import Manager
 
 app = Flask(__name__)
 db = SQLAlchemy()
+
+logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.DEBUG)
 
 
 def setting_app():
