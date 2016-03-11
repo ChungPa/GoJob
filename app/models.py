@@ -33,7 +33,7 @@ class User(db.Model):
 
 class Company(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
-    name = db.Column(db.String(30), nullable=False)
+    name = db.Column(db.String(30), nullable=False, unique=True)
     location = db.Column(db.String(70), nullable=False)
     job_id = db.Column(db.INTEGER, db.ForeignKey('job.id'))
 
@@ -48,11 +48,8 @@ class Company(db.Model):
 class Job(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
     title = db.Column(db.String(30), nullable=False)
-    money = db.Column(db.INTEGER, nullable=False)
     role = db.Column(db.String(30), nullable=False)
-
     company = db.relationship(Company, backref='job')
-
     created = db.Column(db.DATETIME, default=datetime.now(), nullable=False)
     end = db.Column(db.DATE, nullable=False)
 
