@@ -9,7 +9,7 @@ from flask.ext.migrate import MigrateCommand, Migrate
 from flask.ext.script import Manager
 
 app = Flask(__name__)
-db = SQLAlchemy()
+db = SQLAlchemy(app)
 
 logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.DEBUG)
 

@@ -13,7 +13,9 @@ browser = webdriver.PhantomJS()
 
 @job_blueprint.route('/')
 def job_list():
-    return render_template('job/worklist.html')
+    all_job = Job.query.all()
+    return render_template('job/worklist.html',
+                           all_job=all_job)
 
 
 def add_job_data_db(title, company, url, end, role=None):
@@ -26,7 +28,8 @@ def add_job_data_db(title, company, url, end, role=None):
         db.session.rollback()
         c = Company.query.filter_by(name=company).first()
 
-    j = Job(title, c, url, end, role)
+    j = Job(title, url, end, role)
+    c.job.append(j)
 
     db.session.add(j)
 
@@ -47,7 +50,7 @@ def saramin_crawling():
     for job in jobboard:
         job_a_tag = job.findChild('a', 'title')
 
-        url = job_a_tag.get('href')
+        url = 'http://highschool.saramin.co.kr' + job_a_tag.get('href')
         title = job_a_tag.text
 
         company = job.findChild('div', 'company-name').first().text

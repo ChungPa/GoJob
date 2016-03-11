@@ -35,30 +35,29 @@ class Company(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
     location = db.Column(db.String(70))
-    job_id = db.Column(db.INTEGER, db.ForeignKey('job.id'))
+    job = db.relationship('Job', backref='company')
 
     def __init__(self, name, location=None):
         self.name = name
         self.location = location
 
     def __repr__(self):
-        return "<Company %s>" % self.name
+        return u"<Company %s>" % self.name
 
 
 class Job(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
     title = db.Column(db.String(30), nullable=False)
-    role = db.Column(db.String(30), nullable=False)
-    company = db.relationship(Company, backref='job')
+    role = db.Column(db.String(30))
     created = db.Column(db.DATETIME, default=datetime.now(), nullable=False)
+    company_id = db.Column(db.INTEGER, db.ForeignKey('company.id'))
 
     # 마감날짜
     end = db.Column(db.DATE, nullable=False)
-    url = db.Column(db.String(100), nullable=False)
+    url = db.Column(db.String(300), nullable=False)
 
-    def __init__(self, title, company, url, end, role=None):
+    def __init__(self, title, url, end, role=None):
         self.title = title
-        self.company = company
         self.role = role
         self.end = end
         self.url = url
