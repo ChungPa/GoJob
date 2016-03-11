@@ -34,10 +34,10 @@ class User(db.Model):
 class Company(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
     name = db.Column(db.String(30), nullable=False, unique=True)
-    location = db.Column(db.String(70), nullable=False)
+    location = db.Column(db.String(70))
     job_id = db.Column(db.INTEGER, db.ForeignKey('job.id'))
 
-    def __init__(self, name, location):
+    def __init__(self, name, location=None):
         self.name = name
         self.location = location
 
@@ -51,14 +51,17 @@ class Job(db.Model):
     role = db.Column(db.String(30), nullable=False)
     company = db.relationship(Company, backref='job')
     created = db.Column(db.DATETIME, default=datetime.now(), nullable=False)
-    end = db.Column(db.DATE, nullable=False)
 
-    def __init__(self, title, company, money, location, role):
+    # 마감날짜
+    end = db.Column(db.DATE, nullable=False)
+    url = db.Column(db.String(100), nullable=False)
+
+    def __init__(self, title, company, url, end, role=None):
         self.title = title
         self.company = company
-        self.money = money
-        self.location = location
         self.role = role
+        self.end = end
+        self.url = url
 
     def __repr__(self):
         return "<Job %s>" % self.company
