@@ -31,13 +31,27 @@ class User(db.Model):
         return "<User %s>" % self.userid
 
 
+class Company(db.Model):
+    id = db.Column(db.INTEGER, primary_key=True)
+    name = db.Column(db.String(30), nullable=False)
+    location = db.Column(db.String(70), nullable=False)
+    job_id = db.Column(db.INTEGER, db.ForeignKey('job.id'))
+
+    def __init__(self, name, location):
+        self.name = name
+        self.location = location
+
+    def __repr__(self):
+        return "<Company %s>" % self.name
+
+
 class Job(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
     title = db.Column(db.String(30), nullable=False)
-    company = db.Column(db.String(30), nullable=False)
     money = db.Column(db.INTEGER, nullable=False)
-    location = db.Column(db.String(30), nullable=False)
     role = db.Column(db.String(30), nullable=False)
+
+    company = db.relationship(Company, backref='job')
 
     created = db.Column(db.DATETIME, default=datetime.now(), nullable=False)
     end = db.Column(db.DATE, nullable=False)
