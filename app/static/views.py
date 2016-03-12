@@ -15,7 +15,7 @@ def index():
 
 @main_blueprint.route('/works')
 def works():
-    return redirect(url_for('job.job_list'))
+    return redirect(url_for('job.index'))
 
 
 @main_blueprint.route('/aboutus')
@@ -25,7 +25,7 @@ def about():
 
 @main_blueprint.route('/login')
 def login():
-    return redirect(url_for('user.login'))
+    return redirect(url_for('user.index'))
 
 
 # For Static
