@@ -42,6 +42,7 @@ def add_job_data_db(title, company, url, end, role=None):
     try:
         end_date = date(today.year, int(end[:2]), int(end[3:5]))
     except UnicodeEncodeError:
+        # 마감이 하루 남은 경우, 사이트에 날짜가 아닌 '내일마감' 이라고 뜸. 별도 처리가 필요함.
         end_date = date(today.year, today.month, today.day+1)
 
     j = Job(title, url, end_date, role)
