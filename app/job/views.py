@@ -1,5 +1,8 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
+
+from datetime import date
+
 from BeautifulSoup import BeautifulSoup
 from flask import render_template, redirect, url_for
 from selenium import webdriver
@@ -28,7 +31,20 @@ def add_job_data_db(title, company, url, end, role=None):
         db.session.rollback()
         c = Company.query.filter_by(name=company).first()
 
-    j = Job(title, url, end, role)
+    # end_date = time.strptime(end[:5], "%m/%d")
+    # end_date.tm_year = date.today().year
+
+    # strptime 을 이용해 time struct 를 생성해도 되지만, 여기서는 format 이 일정하므로 (사람인 기준) string slice 도 가능할 듯)
+    # 하단 소스가 상당히 더럽다. 수정바람 TODO: EDIT HERE
+
+    today = date.today()
+
+    try:
+        end_date = date(today.year, int(end[:2]), int(end[3:5]))
+    except UnicodeEncodeError:
+        end_date = date(today.year, today.month, today.day+1)
+
+    j = Job(title, url, end_date, role)
     c.job.append(j)
 
     db.session.add(j)
