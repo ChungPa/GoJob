@@ -42,7 +42,7 @@ class Company(db.Model):
         self.location = location
 
     def __repr__(self):
-        return u"<Company %s>" % self.name
+        return "<Company %s>" % self.name
 
 
 class Job(db.Model):
