@@ -8,6 +8,8 @@ from app import db
 # rv = self.app.get(url, query_string=dict(sort=sort_type))
 # rv = self.app.post(url, data=dict())
 
+
+# 디비에 데이터를 넣는 함수의 테스트 경우, 디비 데이터를 원래대로 돌려야 하므로 이 데코레이터를 사용한다.
 class UsingDatabase:
     def __init__(self, f):
         self.func = f
