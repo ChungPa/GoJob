@@ -50,8 +50,6 @@ def add_job_data_db(title, company, url, end, role=None):
 
     db.session.add(j)
 
-    db.session.commit()
-
 
 @job_blueprint.route('/crawling_saramin')
 def saramin_crawling():
@@ -74,6 +72,9 @@ def saramin_crawling():
         date = job.findChild('td', 'closing-date').text
 
         add_job_data_db(title, company, url, date)
+
+    # Add DB at Final
+    db.session.commit()
 
     return redirect(url_for('job.job_list'))
 
