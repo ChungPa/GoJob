@@ -53,7 +53,7 @@ def add_job_data_db(title, company, url, end, role=None):
     db.session.commit()
 
 
-@job_blueprint.route('/crawling')
+@job_blueprint.route('/crawling_saramin')
 def saramin_crawling():
     page = 1
     url = 'http://highschool.saramin.co.kr/zf_user/special-recruit/list/bcode/39/code/C9/listKind/recruit/page/' \
