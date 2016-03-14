@@ -1,17 +1,14 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import sys
-import logging
 
 from flask import Flask
-from flask.ext.sqlalchemy import SQLAlchemy
 from flask.ext.migrate import MigrateCommand, Migrate
 from flask.ext.script import Manager
+from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
 db = SQLAlchemy(app)
-
-# logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=logging.DEBUG)
 
 
 def setting_app():
