@@ -47,7 +47,7 @@ class Company(db.Model):
 
 class Job(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
-    title = db.Column(db.String(30), nullable=False)
+    title = db.Column(db.String(30), nullable=False, unique=True)
     role = db.Column(db.String(30))
     created = db.Column(db.DATETIME, default=datetime.now(), nullable=False)
     company_id = db.Column(db.INTEGER, db.ForeignKey('company.id'))
