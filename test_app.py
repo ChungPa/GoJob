@@ -1,58 +1,79 @@
-# -*-coding: utf-8 -*-
-import unittest
+from flask import url_for
+from flask.ext.testing import TestCase
 
-import manage
-from app import db
-
-
-# rv = self.app.get(url, query_string=dict(sort=sort_type))
-# rv = self.app.post(url, data=dict())
+from app.models import *
+from manage import app
 
 
-# 디비에 데이터를 넣는 함수의 테스트 경우, 디비 데이터를 원래대로 돌려야 하므로 이 데코레이터를 사용한다.
-class UsingDatabase:
-    def __init__(self, f):
-        self.func = f
+class BaseTestCase(TestCase):
+    def create_app(self):
+        app.config['SECRET_KEY'] = 'development-test-key'
+        app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'  # + join(test_cwd, 'flask-tracking.db')
+        app.config['SQLALCHEMY_ECHO'] = True
 
-    def __call__(self, *args, **kwargs):
-        self.func(*args, **kwargs)
-        db.session.rollback()
-        print "RollBack after ", self.func.__name__
+        return app
 
-
-class GoJobTestCase(unittest.TestCase):
     def setUp(self):
-        manage.app.config['TESTING'] = True
-        self.app = manage.app.test_client()
-
-    @classmethod
-    def tearDownClass(cls):
-        print cls.__name__ + " is Complete.\n"
+        db.create_all()
 
     def tearDown(self):
-        print "  %s Pass" % self._testMethodName
+        db.session.remove()
+        db.drop_all()
 
 
-class MainTestCase(GoJobTestCase):
+class TemplateTestCase(BaseTestCase):
+    render_templates = False
 
-    def test_main_template(self):
-        rv = self.app.get('/intro', follow_redirects=True)
-        assert "Sunrin Job World" in rv.data
+    def test_job_template(self):
+        self.client.get(url_for('job.job_list'))
+        self.assertTemplateUsed('job/worklist.html')
+
+    def test_index_template(self):
+        self.client.get(url_for('main.index'))
+        self.assertTemplateUsed('main/index.html')
 
     def test_about_template(self):
-        rv = self.app.get('/aboutus')
-        assert "About" in rv.data
+        self.client.get(url_for('main.about'))
+        self.assertTemplateUsed('main/about.html')
 
-    def test_main_static(self):
-        rv = self.app.get('/css/style.css')
-        assert ".default_color{background-color: #2196F3 !important}" in rv.data
-
-
-class AccountTestCase(GoJobTestCase):
     def test_login_template(self):
-        rv = self.app.get('/user/')
-        assert "Login" in rv.data
+        self.client.get(url_for('user.login_template'))
+
+        self.assertTemplateUsed('account/login.html')
+
+    def test_static_files(self):
+        response = self.client.get(url_for('main.static_css', filename='style.css'))
+        self.assert200(response, 'Static Error!')
 
 
-if __name__ == '__main__':
-    unittest.main()
+class ModelingTestCase(BaseTestCase):
+    def test_User_Model(self):
+        u = User('name', 'userid', 'userpw', 'fb_id', 'fb_accesstoken')
+        db.session.add(u)
+        db.session.commit()
+
+        assert u in db.session
+
+    def test_Company_Model(self):
+        c = Company('name')
+        db.session.add(c)
+        db.session.commit()
+
+        assert c in db.session
+
+    def test_Job_Model(self):
+        j = Job('title', 'url', datetime.now())
+        db.session.add(j)
+        db.session.commit()
+
+        assert j in db.session
+
+
+class CrawlingTestCase(BaseTestCase):
+    def test_crawling_saramin(self):
+        before_data_cnt = len(Job.query.all())
+        self.client.get(url_for('job.saramin_crawling'))
+        after_data_cnt = len(Job.query.all())
+
+        self.assertGreater(after_data_cnt, before_data_cnt)
+
