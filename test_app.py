@@ -1,5 +1,4 @@
 # -*-coding: utf-8 -*-
-import os
 import unittest
 
 import manage
@@ -17,15 +16,6 @@ class UsingDatabase:
         self.func(*args, **kwargs)
         db.session.rollback()
         print "RollBack after ", self.func.__name__
-
-
-class LoggingTest:
-    def __init__(self, f):
-        self.func = f
-
-    def __call__(self):
-        self.func()
-        print self.func.__name__, " Pass"
 
 
 class GoJobTestCase(unittest.TestCase):
