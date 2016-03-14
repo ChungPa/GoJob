@@ -6,5 +6,5 @@ from . import user_blueprint
 
 
 @user_blueprint.route('/')
-def login_tempalate():
+def login_template():
     return render_template('account/login.html')
