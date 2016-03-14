@@ -9,7 +9,6 @@ class BaseTestCase(TestCase):
     def create_app(self):
         app.config['SECRET_KEY'] = 'development-test-key'
         app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///:memory:'  # + join(test_cwd, 'flask-tracking.db')
-        app.config['SQLALCHEMY_ECHO'] = True
 
         return app
 
