@@ -77,7 +77,3 @@ def saramin_crawling():
     db.session.commit()
 
     return redirect(url_for('job.job_list'))
-
-    # return '<br>'.join(["%s until %s at %s" % (
-    #    job.findChild('a', 'title').text, job.findChild('td', 'closing-date').text,
-    #    job.findChild('div', 'company-name').first().text) for job in jobboard])
