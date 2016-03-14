@@ -1,7 +1,9 @@
 from flask import url_for
 from flask.ext.testing import TestCase
 
-from app.models import *
+from crawling_job.saramin import *
+
+from app.models import Job
 from manage import app
 
 
@@ -71,8 +73,10 @@ class ModelingTestCase(BaseTestCase):
 class CrawlingTestCase(BaseTestCase):
     def test_crawling_saramin(self):
         before_data_cnt = len(Job.query.all())
-        self.client.get(url_for('job.saramin_crawling'))
+        saramin_crawling()
         after_data_cnt = len(Job.query.all())
+
+        print "Before = %s\nAfter = %s" % (before_data_cnt, after_data_cnt)
 
         self.assertGreater(after_data_cnt, before_data_cnt)
 
