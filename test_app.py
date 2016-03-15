@@ -71,6 +71,10 @@ class ModelingTestCase(BaseTestCase):
 
 
 class CrawlingTestCase(BaseTestCase):
+
+    def test_get_cnt_major_saramin(self):
+        self.assertIsNot(get_cnt_major('major001'), None)
+
     def test_crawling_saramin(self):
         before_data_cnt = len(Job.query.all())
         saramin_crawling()
@@ -79,4 +83,3 @@ class CrawlingTestCase(BaseTestCase):
         print "Before = %s\nAfter = %s" % (before_data_cnt, after_data_cnt)
 
         self.assertGreater(after_data_cnt, before_data_cnt)
-
