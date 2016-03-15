@@ -1,7 +1,11 @@
+# -*-coding: utf-8 -*-
+
 from flask import url_for
 from flask.ext.testing import TestCase
 
 from crawling_job.saramin import *
+
+from app.fb_manager import get_user_school, check_sunrin
 
 from app.models import Job
 from manage import app
@@ -63,15 +67,15 @@ class ModelingTestCase(BaseTestCase):
         assert c in db.session
 
     def test_Job_Model(self):
-        j = Job('title', 'url', datetime.now())
+        j = Job('title', '1000', 'seoul', 'only weeks', 'major001', datetime.now(), 'url')
         db.session.add(j)
         db.session.commit()
 
         assert j in db.session
 
 
+"""
 class CrawlingTestCase(BaseTestCase):
-
     def test_get_cnt_major_saramin(self):
         self.assertIsNot(get_cnt_major('major001'), None)
 
@@ -83,3 +87,36 @@ class CrawlingTestCase(BaseTestCase):
         print "Before = %s\nAfter = %s" % (before_data_cnt, after_data_cnt)
 
         self.assertGreater(after_data_cnt, before_data_cnt)
+"""
+
+
+class FacebookTestCase(BaseTestCase):
+    def test_get_user_school(self):
+        access_token = "CAADkT44ofvABALXGeDxOUqnmsUK7BQW8uZBoEHZBKYXZADNyEZB6FPAItZCjCkgsw6pNXA1ZAtLrw1WZBZBF4Xpmd2KK" \
+                       "xdiDZC5qaByd0k0XbiyEmyQFeHopnyXe66uFipVvvHm8OkrCWX0Xh2IWNZBb63NObZAG33EHib4XZAKs2ZCV3MgEU9jO0" \
+                       "LeQMFGmCZCoK6v3wZD"
+
+        school_name = get_user_school(access_token)
+
+        self.assertNotEqual(school_name, None)
+
+    def test_check_sunrin(self):
+        result = check_sunrin(u'Sunrin High School')
+
+        self.assertEqual(result, True)
+
+        result = check_sunrin(u'선린인터넷고등학교')
+
+        self.assertEqual(result, True)
+
+        result = check_sunrin(u'알파고등학교')
+
+        self.assertEqual(result, False)
+
+        result = check_sunrin(u'SunRin High School')
+
+        self.assertEqual(result, True)
+
+        result = check_sunrin(u'Super High School')
+
+        self.assertEqual(result, False)
