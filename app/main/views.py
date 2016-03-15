@@ -1,10 +1,23 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import os.path
+import json
 
 from flask import render_template, send_from_directory, redirect, url_for
-
+from urllib2 import urlopen
+from selenium import webdriver
+from BeautifulSoup import BeautifulSoup
 from . import main_blueprint
+
+browser = webdriver.PhantomJS()
+
+
+def get_commit_cnt():
+
+    user_data = json.loads(urlopen('https://api.github.com/repos/ChungPa/GoJob/contributors').read())
+    contributors = dict((user['login'], user['contributions']) for user in user_data)
+
+    return contributors
 
 
 @main_blueprint.route('/')
@@ -20,7 +33,9 @@ def works():
 
 @main_blueprint.route('/aboutus')
 def about():
-    return render_template('main/about.html')
+    contributors = get_commit_cnt()
+    return render_template('main/about.html',
+                           contributors=contributors)
 
 
 @main_blueprint.route('/login')
