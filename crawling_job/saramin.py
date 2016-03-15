@@ -6,7 +6,21 @@ from selenium import webdriver
 from BeautifulSoup import BeautifulSoup
 from sqlalchemy.exc import IntegrityError
 
+from fb_manager import write_new_post
+
 browser = webdriver.PhantomJS()
+
+major_dict = {
+    'major001': u"전기/전자/기계",
+    'major002': u"정보처리/E-비즈/콘텐츠",
+    'major003': u"호텔/조리/관광/미용",
+    'major004': u"건축/토목/인테리어",
+    'major005': u"제품/산업/시각디자인",
+    'major006': u"금융/회계/재무",
+    'major007': u"경영/비즈니스/비서",
+    'major008': u"유통/물류/국제통상",
+    'major009': u"방송/영상/멀티미디어"
+}
 
 
 def get_cnt_major(major):
@@ -21,7 +35,6 @@ def get_cnt_major(major):
      major007: 경영/비즈니스/비서
      major008: 유통/물류/국제통상
      major009: 방송/영상/멀티미디어
-     major010: 보건/간호
 
     :return:
         해당 major (전기,호텔..etc) 의 총 채용정보 갯수 (int)
@@ -36,7 +49,7 @@ def get_cnt_major(major):
 
 
 def add_job_data_db(title, company, url, end_date, location, pay, work_style, role):
-    c = Company(company)
+    c = Company(company, location)
 
     db.session.add(c)
     try:
@@ -45,30 +58,49 @@ def add_job_data_db(title, company, url, end_date, location, pay, work_style, ro
         db.session.rollback()
         c = Company.query.filter_by(name=company).first()
 
-    j = Job(title, pay, location, work_style, role, end_date, url)
+    j = Job(title, pay, work_style, role, end_date, url)
     c.job.append(j)
 
     db.session.add(j)
 
     db.session.commit()
 
+    return j
+
 
 def get_job_info(url):
     browser.get(url)
     soup = BeautifulSoup(browser.page_source)
 
-    a = soup.find('table', {'class': 'rct_view_info'}).findChild('tbody').findChildren('tr')
-
     # 지역
-    location = soup.find('div', {'class': 'recruit_summary'}).findChild('tbody').findChildren('tr')[0].findChild(
-        'td').find('span').first().previousSibling.strip()
+    try:
+        location = soup.find('div', {'class': 'recruit_summary'}).findChild('tbody').findChildren('tr')[0].findChild(
+            'td').find('span').first().previousSibling.strip()
+    except AttributeError:
+        # There is No Info :(
+        # Just Return Dummy Data.
+        location = "We Dunno..."
+    else:
+        for keyword in ['&nbsp;', '&gt;']:
+            location = location.replace(keyword, '')
 
     # 급여
-    pay = soup.find('div', {'class': 'recruit_summary'}).findChild('tbody').findChildren('tr')[1].findChild('td').text
+    try:
+        pay = soup.find('div', {'class': 'recruit_summary'}).findChild('tbody').findChildren('tr')[1].findChild(
+            'td').text
+    except AttributeError:
+        # There is No Info :(
+        # Just Return Dummy Data.
+        pay = "We Dunno..."
 
     # 근무형태
-    work_style = soup.find('div', {'class': 'recruit_summary'}).findChild('tbody').findChildren('tr')[2].findChild(
-        'td').text
+    try:
+        work_style = soup.find('div', {'class': 'recruit_summary'}).findChild('tbody').findChildren('tr')[2].findChild(
+            'td').text
+    except AttributeError:
+        # There is No Info :(
+        # Just Return Dummy Data.
+        work_style = "We Dunno..."
 
     """
         # 근무요일
@@ -83,6 +115,7 @@ def saramin_crawling():
 
     for major in major_list:
         major_cnt = get_cnt_major(major)
+
         url = 'http://highschool.saramin.co.kr/zf_user/highschool/jobs/major-list?' \
               'category=%s&pageCount=%s' % (major, major_cnt)
 
@@ -119,8 +152,23 @@ def saramin_crawling():
                 # 마감이 하루 남은 경우, 사이트에 날짜가 아닌 '내일마감' 이라고 뜸. 별도 처리가 필요함.
                 end_date = date(today.year, today.month, today.day + 1)
 
+            # major001 --> 전기/.. etc
+            job_role = major_dict[major]
+
             # def add_job_data_db(title, company, url, end_date, location, pay, work_style, role)
-            add_job_data_db(title, company, url, end_date, location, pay, work_style, major)
+            try:
+                job_db = add_job_data_db(title, company, url, end_date, location, pay, work_style, job_role)
+            except IntegrityError:
+                db.session.rollback()
+                continue
+            else:
+                # Not Error
+                content = u"""%s\n%s\n회사명: %s\n위치: %s\n급여: %s\n근무형태: %s\n마감일자: %s\n신청링크: %s""" % (
+                    job_role, title, company, location, pay, work_style, end_date, url)
+                fb_id = write_new_post(content)
+                job_db.fb_article_id = fb_id
+                db.session.commit()
+                print "Uploaded"
 
     return True
 
