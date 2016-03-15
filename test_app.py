@@ -92,9 +92,9 @@ class CrawlingTestCase(BaseTestCase):
 
 class FacebookTestCase(BaseTestCase):
     def test_get_user_school(self):
-        access_token = "CAADkT44ofvABALXGeDxOUqnmsUK7BQW8uZBoEHZBKYXZADNyEZB6FPAItZCjCkgsw6pNXA1ZAtLrw1WZBZBF4Xpmd2KK" \
-                       "xdiDZC5qaByd0k0XbiyEmyQFeHopnyXe66uFipVvvHm8OkrCWX0Xh2IWNZBb63NObZAG33EHib4XZAKs2ZCV3MgEU9jO0" \
-                       "LeQMFGmCZCoK6v3wZD"
+        access_token = "CAADkT44ofvABABuZCFg2jdTmqAowOBmsFMZC8AZAzrN5DB9Xk1FnPwIV2jiNQADDxUrMAiYnBMhdK2gIQZBeiKX" \
+                       "K37oQpTG8loXGNNjYHb3H7QDy8cpMxjFxty9QAZCvzy9QzwD10muxle9pI17Gi0ZA1tDdlPrZAKS7u8ClG7MA0sG" \
+                       "RVr3fm9E4PAtKPxXyCsZD"
 
         school_name = get_user_school(access_token)
 
