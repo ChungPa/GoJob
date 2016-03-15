@@ -1,12 +1,12 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-import os.path
 import json
+import os.path
+from urllib2 import urlopen
 
 from flask import render_template, send_from_directory, redirect, url_for
-from urllib2 import urlopen
 from selenium import webdriver
-from BeautifulSoup import BeautifulSoup
+
 from . import main_blueprint
 
 browser = webdriver.PhantomJS()
