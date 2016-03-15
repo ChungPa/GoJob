@@ -11,7 +11,7 @@ sunrin_keyword = [u'선린', u'sunrin']
 
 
 def check_sunrin(school):
-    return any([keyword in school for keyword in sunrin_keyword])
+    return any([keyword in school.lower() for keyword in sunrin_keyword])
 
 
 def get_user_school(access_token):
@@ -19,7 +19,10 @@ def get_user_school(access_token):
 
     json_school_data = json.loads(urlopen(url).read())
 
-    return json_school_data['education'][0]['school']['name']
+    try:
+        return json_school_data['education'][0]['school']['name']
+    except KeyError:
+        return "No School"
 
 
 facebook = oauth.remote_app('facebook',
