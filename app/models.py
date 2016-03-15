@@ -49,23 +49,22 @@ class Job(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
     title = db.Column(db.String(30), nullable=False, unique=True)
     pay = db.Column(db.String(30), nullable=False)
-    location = db.Column(db.String(50), nullable=False)
     work_style = db.Column(db.String(50), nullable=False)
     role = db.Column(db.String(30), nullable=False)
     created = db.Column(db.DATETIME, default=datetime.now(), nullable=False)
     company_id = db.Column(db.INTEGER, db.ForeignKey('company.id'))
+    fb_article_id = db.Column(db.String(100), unique=True)
 
     # 마감날짜
     end = db.Column(db.DATE, nullable=False)
     url = db.Column(db.String(300), nullable=False)
 
-    def __init__(self, title, pay, location, work_style, role, end, url):
+    def __init__(self, title, pay, work_style, role, end, url):
         self.title = title
         self.role = role
         self.end = end
         self.url = url
         self.pay = pay
-        self.location = location
         self.work_style = work_style
 
     def __repr__(self):
