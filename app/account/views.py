@@ -45,7 +45,6 @@ def facebook_authorized(resp):
     user_school = get_user_school(access_token)
 
     if check_sunrin(user_school) is False:
-        print "You are not Sunrin Student!"
         return redirect(url_for('user.login_template'))
 
     # TODO: redirect to main
