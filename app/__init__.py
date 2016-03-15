@@ -8,6 +8,7 @@ from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app = Flask(__name__)
+app.config.from_pyfile('../config.py')
 db = SQLAlchemy(app)
 
 
@@ -22,7 +23,6 @@ def setting_app():
     app.register_blueprint(job_blueprint, url_prefix='/job')
     app.register_blueprint(user_blueprint, url_prefix='/user')
 
-    app.config.from_pyfile('../config.py')
     return app
 
 
