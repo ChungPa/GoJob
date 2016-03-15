@@ -17,7 +17,7 @@
                 {% for job in all_job %}
                     <div class="col s12 m4 l4">
                         <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light">
+                            <div class="card-image waves-effect waves-block waves-light card">
                                 <!--
                                 <img class="activator"
                                      src="{{ url_for('main.static_img', filename='project1.jpg') }}">
@@ -32,6 +32,14 @@
                                 <span class="card-title grey-text text-darken-4">회사명 <i
                                         class="mdi-navigation-close right"></i></span>
                                 <p>{{ job.company.name }}</p>
+                                <span class="card-title grey-text text-darken-4">직종</span>
+                                <p>{{ job.role }}</p>
+                                <span class="card-title grey-text text-darken-4">근무 형태</span>
+                                <p>{{ job.work_style }}</p>
+                                <span class="card-title grey-text text-darken-4">급여</span>
+                                <p>{{ job.pay }}</p>
+                                <span class="card-title grey-text text-darken-4">위치</span>
+                                <p>{{ job.company.location }}</p>
                                 <span class="card-title grey-text text-darken-4">채용 마감</span>
                                 <p>{{ job.end }}</p>
                             </div>
