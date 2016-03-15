@@ -32,8 +32,10 @@ facebook = oauth.remote_app('facebook',
                             authorize_url='https://www.facebook.com/dialog/oauth',
                             consumer_key=FACEBOOK_APP_ID,
                             consumer_secret=FACEBOOK_APP_SECRET,
-                            # Request Permission User's Education_history for get user's school
-                            request_token_params={'scope': ['user_education_history']}
+                            # Request Permission
+                            # user_education_history = User's Education_history for get user's school
+                            request_token_params={
+                                'scope': ['user_education_history']}
                             )
 
 
