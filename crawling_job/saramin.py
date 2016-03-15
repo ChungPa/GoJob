@@ -1,9 +1,13 @@
 # -*-coding: utf-8 -*-
+from __future__ import print_function
 from app.models import *
-
 from datetime import date
 from selenium import webdriver
-from BeautifulSoup import BeautifulSoup
+
+try:
+    from BeautifulSoup import BeautifulSoup
+except ImportError:
+    from bs4 import BeautifulSoup
 from sqlalchemy.exc import IntegrityError
 
 browser = webdriver.PhantomJS()
@@ -127,4 +131,4 @@ def saramin_crawling():
 
 if __name__ == '__main__':
     saramin_crawling()
-    print "Done."
+    print("Done.")

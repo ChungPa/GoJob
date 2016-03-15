@@ -1,3 +1,4 @@
+from __future__ import print_function
 from flask import url_for
 from flask.ext.testing import TestCase
 
@@ -71,7 +72,6 @@ class ModelingTestCase(BaseTestCase):
 
 
 class CrawlingTestCase(BaseTestCase):
-
     def test_get_cnt_major_saramin(self):
         self.assertIsNot(get_cnt_major('major001'), None)
 
@@ -80,6 +80,6 @@ class CrawlingTestCase(BaseTestCase):
         saramin_crawling()
         after_data_cnt = len(Job.query.all())
 
-        print "Before = %s\nAfter = %s" % (before_data_cnt, after_data_cnt)
+        print("Before = %s\nAfter = %s" % (before_data_cnt, after_data_cnt))
 
         self.assertGreater(after_data_cnt, before_data_cnt)
