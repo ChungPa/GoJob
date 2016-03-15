@@ -40,7 +40,7 @@ def about():
 
 @main_blueprint.route('/login')
 def login():
-    return redirect(url_for('user.login'))
+    return redirect(url_for('user.login_template'))
 
 
 # For Static
