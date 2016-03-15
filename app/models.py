@@ -48,7 +48,10 @@ class Company(db.Model):
 class Job(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
     title = db.Column(db.String(30), nullable=False, unique=True)
-    role = db.Column(db.String(30))
+    pay = db.Column(db.String(30), nullable=False)
+    location = db.Column(db.String(50), nullable=False)
+    work_style = db.Column(db.String(50), nullable=False)
+    role = db.Column(db.String(30), nullable=False)
     created = db.Column(db.DATETIME, default=datetime.now(), nullable=False)
     company_id = db.Column(db.INTEGER, db.ForeignKey('company.id'))
 
@@ -56,11 +59,14 @@ class Job(db.Model):
     end = db.Column(db.DATE, nullable=False)
     url = db.Column(db.String(300), nullable=False)
 
-    def __init__(self, title, url, end, role=None):
+    def __init__(self, title, pay, location, work_style, role, end, url):
         self.title = title
         self.role = role
         self.end = end
         self.url = url
+        self.pay = pay
+        self.location = location
+        self.work_style = work_style
 
     def __repr__(self):
         return "<Job %s>" % self.company
