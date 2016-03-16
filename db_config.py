@@ -1,9 +1,0 @@
-SQLALCHEMY_DATABASE_URI = 'mysql://gojob:chungpa@localhost:3306/gojob?charset=utf8'
-FACEBOOK_APP_ID = '251030338567920'
-FACEBOOK_APP_SECRET = 'ad9fb7f0a0d3e8c60f591cdf2f92a1d1'
-FACEBOOK_PAGE_ID = '577587075742188'
-
-FACEBOOK_ALARM_USER_ACCESSTOKEN = 'CAADkT44ofvABANXUkUB0ZAAyok5yMn7a07TlV7xs7TZAUMGI3uDh8kHOOSVY4TbrOtesdAFY0fr8PDczT' \
-                                  'Yh3PIIjkrmFmrS9HrbRTeAd3bwMrZAgrqOiFPj1Nj3xIVo4ynn8z3pZB0574GdZAJUwDMgSgS8w9VUbiXl' \
-                                  'BzeEKoSjVMfFxpJsYS1U9CiJkvz1MZD'
-
