@@ -165,7 +165,10 @@ def saramin_crawling():
                 # Not Error
                 content = u"""%s\n%s\n회사명: %s\n위치: %s\n급여: %s\n근무형태: %s\n마감일자: %s\n신청링크: %s""" % (
                     job_role, title, company, location, pay, work_style, end_date, url)
+
+                # Add Article Job at Facebook Page!
                 fb_id = write_new_post(content)
+
                 job_db.fb_article_id = fb_id
                 db.session.commit()
                 print "Uploaded"
