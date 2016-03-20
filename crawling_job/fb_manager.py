@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-페이스북 Page 포스팅 하는 법 ㅜㅜ 기나긴 삽질 끝에 알아냄 BY KCRONG
+페이스북 Page 포스팅 하는 법 BY KCRONG
 1. 유저에게 manage_pages 와 publish_pages 권한을 요청
 2. https://graph.facebook.com/{page_id}?fields=access_token 으로 '페이지'의 access_token 을 가져옴
 3. 가져온 페이지 access_token 으로,
