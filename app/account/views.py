@@ -4,9 +4,9 @@ from flask import render_template, request, url_for, session, redirect
 
 from . import user_blueprint
 from ..models import User
-from ..fb_manager import facebook
 
-from ..fb_manager import get_user_school, check_sunrin
+from ..fb_manager import facebook, get_user_school, check_sunrin
+from ..kakao_manager import *
 
 
 @user_blueprint.route('/')
@@ -49,3 +49,23 @@ def facebook_authorized(resp):
 
     # TODO: redirect to main
     return "need redirecting"
+
+"""
+@user_blueprint.route('/kakao_login')
+def kakao_login():
+    url = "https://kauth.kakao.com/oauth/authorize?" \
+          "client_id=%s&" \
+          "redirect_uri=%s&" \
+          "response_type=code" % (KAKAO_APP_ID, (request.url + '/authorized'))
+    return redirect(url)
+
+
+@user_blueprint.route('/kakao_login/authorized')
+def kakao_authorized():
+    code = request.args['code']
+    token = get_kakao_access_token(code)
+    user_id = get_kakao_user_id(token)
+    register_kakao_push_token(user_id)
+
+    print "Asdf"
+"""
