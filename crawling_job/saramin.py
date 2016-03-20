@@ -1,4 +1,9 @@
 # -*-coding: utf-8 -*-
+"""
+Saramin Crawling
+http://www.saramin.co.kr
+"""
+
 from app.models import *
 
 from datetime import date
