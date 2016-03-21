@@ -49,7 +49,7 @@ def get_more_info_job(url):
 
     address_pay = job_condition.findChildren('dd')
 
-    address = " ".join(address_pay[0]._getAttrMap()['title'].split())
+    address = " ".join(address_pay[0].attrMap()['title'].split())
     pay = address_pay[1].text.split()[1]
 
     work_type = job_form.findChild('dd').text
@@ -91,8 +91,8 @@ def get_all_job():
         company_td, title_td = job.findChildren('td', {'class': 'title'})
         company = company_td.findChild('a').text
         title_root = title_td.findChild('p', {'class': 'link'})
-        title = title_root._getAttrMap()['title']
-        url = 'http://www.work.go.kr' + title_root.findChild('a')._getAttrMap()['href']
+        title = title_root.attrMap()['title']
+        url = 'http://www.work.go.kr' + title_root.findChild('a').attrMap()['href']
 
         end_date_string = job.findChildren('td')[5].text
 
