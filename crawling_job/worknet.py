@@ -6,7 +6,7 @@ http://www.work.go.kr
 import time
 import requests
 
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 from db_manager import add_job_data_db
 from fb_manager import write_new_post
 from sqlalchemy.exc import IntegrityError

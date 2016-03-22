@@ -1,5 +1,5 @@
 alembic==0.8.5
-BeautifulSoup==3.2.1
+beautifulsoup4==4.4.1
 blinker==1.4
 coverage==4.0.3
 Flask==0.10.1

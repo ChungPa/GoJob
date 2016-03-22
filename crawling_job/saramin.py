@@ -8,13 +8,16 @@ from app.models import *
 
 from datetime import date
 from selenium import webdriver
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 from sqlalchemy.exc import IntegrityError
 
 from db_manager import add_job_data_db
 from fb_manager import write_new_post
+from platform import system
 
 browser = webdriver.PhantomJS()
+if system() == 'Windows':
+    browser = webdriver.PhantomJS(executable_path='')
 
 major_dict = {
     'major001': u"전기/전자/기계",
