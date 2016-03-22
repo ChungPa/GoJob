@@ -16,7 +16,7 @@
 """
 import json
 
-from db_config import FACEBOOK_ALARM_USER_ACCESSTOKEN, FACEBOOK_PAGE_ID
+from fb_config import FACEBOOK_ALARM_USER_ACCESSTOKEN, FACEBOOK_PAGE_ID
 from urllib import urlopen
 import requests
 

@@ -8,6 +8,7 @@ db_config.py
 # C extensions
 *.so
 
+/crawling_job/fb_config.py
 # Distribution / packaging
 .Python
 .idea/
