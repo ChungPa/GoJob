@@ -15,13 +15,11 @@ db = SQLAlchemy(app)
 def setting_app():
     sys.path.append(app.root_path)
 
-    from account import user_blueprint
     from job import job_blueprint
     from main import main_blueprint
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(job_blueprint, url_prefix='/job')
-    app.register_blueprint(user_blueprint, url_prefix='/user')
 
     return app
 

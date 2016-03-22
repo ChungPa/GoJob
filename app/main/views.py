@@ -5,11 +5,8 @@ import os.path
 from urllib2 import urlopen
 
 from flask import render_template, send_from_directory, redirect, url_for
-from selenium import webdriver
 
 from . import main_blueprint
-
-browser = webdriver.PhantomJS()
 
 
 def get_commit_cnt():
@@ -36,11 +33,6 @@ def about():
     contributors = get_commit_cnt()
     return render_template('main/about.html',
                            contributors=contributors)
-
-
-@main_blueprint.route('/login')
-def login():
-    return redirect(url_for('user.login_template'))
 
 
 # For Static
