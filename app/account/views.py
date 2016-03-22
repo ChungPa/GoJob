@@ -8,7 +8,7 @@ from ..models import User
 from ..fb_manager import facebook, get_user_school, check_sunrin
 from ..kakao_manager import *
 
-
+"""
 @user_blueprint.route('/')
 def login_template():
     return render_template('account/login.html')
@@ -49,6 +49,8 @@ def facebook_authorized(resp):
 
     # TODO: redirect to main
     return "need redirecting"
+"""
+
 
 """
 @user_blueprint.route('/kakao_login')
