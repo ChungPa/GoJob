@@ -11,51 +11,6 @@ from fb_manager import write_new_post
 from app.models import *
 
 
-def get_all_job_cnt():
-    r = requests.post('http://www.work.go.kr/empInfo/empInfoSrch/list/dtlEmpSrchList.do',
-                      data={
-                          'moreCon': "",
-                          'tabMode': "",
-                          'siteClcd': "all",
-                          'keyword': "",
-                          'region': "",
-                          'regionNm': "",
-                          'occupation': "",
-                          'occupationNm': "",
-                          'payGbn': "noPay",
-                          'minPay': "",
-                          'maxPay': "",
-                          'academicGbn': "00,01,02,03",
-                          'careerTypes': "N",
-                          'preferentialGbn': "all",
-                          'resultCnt': "1"
-                      })
-
-    soup = BeautifulSoup(r.text, "html.parser")
-    all_cnt = soup.find('span', {'class': 'matching'}).findChild('strong').text.replace(',', '')
-
-    return int(all_cnt)
-
-
-def get_more_info_job(url):
-    r = requests.get(url)
-    soup = BeautifulSoup(r.text, "html.parser")
-
-    job_condition = soup.find('li', {'class': 'condition'})
-    job_form = soup.find('li', {'class': 'form'})
-
-    address_pay = job_condition.findChildren('dd')
-
-    address = " ".join(address_pay[0].attrMap['title'].split())
-    pay = address_pay[1].text.split()[1]
-
-    work_type = job_form.findChild('dd').text
-
-    role = soup.find('tbody', {'class': 'form05'}).first().findChild('td').first().previousSibling.strip()
-
-    return pay, work_type, role, address
-
-
 class Worknet:
     def __init__(self):
         # all_cnt = get_all_job_cnt()
