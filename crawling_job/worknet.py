@@ -11,46 +11,7 @@ from fb_manager import write_new_post
 from app.models import *
 
 
-class Worknet:
-    def __init__(self):
-        # all_cnt = get_all_job_cnt()
-        # print "Worknet : %s" % all_cnt
-
-        # new_job_cnt = all_cnt - Job.query.filter(Job.url.contains('www.work.go.kr')).count()
-        # print "New Worknet Job: %d" % new_job_cnt
-        self.new_job_cnt = 7775
-        self.domain = 'http://www.work.go.kr'
-        self.request_data = {
-            'moreCon': "",
-            'tabMode': "",
-            'siteClcd': "all",
-            'keyword': "",
-            'region': "",
-            'regionNm': "",
-            'occupation': "",
-            'occupationNm': "",
-            'payGbn': "noPay",
-            'minPay': "",
-            'maxPay': "",
-            'academicGbn': "00,01,02,03",
-            'careerTypes': "N",
-            'preferentialGbn': "all",
-            'x': "30",
-            'y': "18",
-            'resultCnt': str(self.new_job_cnt)
-        }
-        self.needed_data = {
-            'company': '',
-            'detail_info_url': '',
-            'created_date': '',
-            'end_date': '',
-            'location': '',
-
-            'pay': '',
-            'work_type': '',
-            'role': ''
-        }
-
+class Parser:
     def make_soup(self, method, url, data=None):
         method = method.lower()
         import os
@@ -109,6 +70,47 @@ class Worknet:
         error_msg("ERROR!! Check {}".format(fn))
         import sys
         sys.exit(1)
+
+
+class Worknet(Parser):
+    def __init__(self):
+        # all_cnt = get_all_job_cnt()
+        # print "Worknet : %s" % all_cnt
+
+        # new_job_cnt = all_cnt - Job.query.filter(Job.url.contains('www.work.go.kr')).count()
+        # print "New Worknet Job: %d" % new_job_cnt
+        self.new_job_cnt = 7775
+        self.domain = 'http://www.work.go.kr'
+        self.request_data = {
+            'moreCon': "",
+            'tabMode': "",
+            'siteClcd': "all",
+            'keyword': "",
+            'region': "",
+            'regionNm': "",
+            'occupation': "",
+            'occupationNm': "",
+            'payGbn': "noPay",
+            'minPay': "",
+            'maxPay': "",
+            'academicGbn': "00,01,02,03",
+            'careerTypes': "N",
+            'preferentialGbn': "all",
+            'x': "30",
+            'y': "18",
+            'resultCnt': str(self.new_job_cnt)
+        }
+        self.needed_data = {
+            'company': '',
+            'detail_info_url': '',
+            'created_date': '',
+            'end_date': '',
+            'location': '',
+
+            'pay': '',
+            'work_type': '',
+            'role': ''
+        }
 
     def get_list(self):
         """
@@ -187,9 +189,12 @@ class Worknet:
             self.error_handler(soup, 'employ_type and workday nono...')
 
         self.needed_data['title'] = title
-        due_date = self.ss2str(soup.find('span', {'class': 'due'}).parent.stripped_strings)
-        self.needed_data['end_date'] = datetime.strptime(due_date, u'%Y년 %m월 %d일'.encode('utf-8'))
-        # 제발 python3 합시다
+        due_date = self.ss2str(soup.find('span', {'class': 'due'}).parent.stripped_strings).encode('utf-8')
+        due_date = due_date.replace("년", "/")
+        due_date = due_date.replace("월", "/")
+        due_date = due_date.replace("일", "")
+        self.needed_data['end_date'] = datetime.strptime(due_date, '%Y/ %m/ %d')
+        # 제발 python3 합시다 좀
         self.needed_data['detail_info_url'] = url
         self.needed_data['company'] = self.ss2str(tables[1].find('td').find('strong').stripped_strings)
 
