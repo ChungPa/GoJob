@@ -4,11 +4,13 @@ Worknet
 http://www.work.go.kr
 """
 from datetime import datetime
+from re import search
 import requests
 
 from bs4 import BeautifulSoup
 from fb_manager import write_new_post
 from app.models import *
+from sqlalchemy.sql import exists
 
 
 class Parser:
@@ -131,6 +133,14 @@ class Worknet(Parser):
             # company = col_list[1].string  # 회사명
             # title = col_list[2].find('p', {'class': 'link'})['title']
             detail_info_url = '{}{}'.format(self.domain, column[2].find('a')['href'])  # 상세정보 url
+            end_data = self.ss2str(col_list[5].stripped_strings).encode('utf-8')
+
+            try:
+                end_data = search(r'(\d\d-\d\d-\d\d)', end_data).group(0)
+                self.needed_data['end_date'] = datetime.strptime(end_data, '%y-%m-%d')
+            except AttributeError:
+                pass
+            print self.needed_data['end_date']
             recruit_url_list.append(detail_info_url)
 
         return recruit_url_list
@@ -189,11 +199,18 @@ class Worknet(Parser):
             self.error_handler(soup, 'employ_type and workday nono...')
 
         self.needed_data['title'] = title
-        due_date = self.ss2str(soup.find('span', {'class': 'due'}).parent.stripped_strings).encode('utf-8')
-        due_date = due_date.replace("년", "/")
-        due_date = due_date.replace("월", "/")
-        due_date = due_date.replace("일", "")
-        self.needed_data['end_date'] = datetime.strptime(due_date, '%Y/ %m/ %d')
+        try:
+            due_date = self.ss2str(soup.find('span', {'class': 'due'}).parent.stripped_strings).encode('utf-8')
+        except AttributeError:  # d-몇일 없는경우
+            tr_list = list(soup.find('tbody', {'class': 'form05'}).find_all('tr'))
+            due_date = self.ss2str(tr_list[4].find('td').stripped_strings)
+        try:
+            due_date = due_date.replace("년", "/")
+            due_date = due_date.replace("월", "/")
+            due_date = due_date.replace("일", "")
+            self.needed_data['end_date'] = datetime.strptime(due_date, '%Y/ %m/ %d')
+        except UnicodeDecodeError:  # 채용시까지.. TODO: 다시짜야됨
+            pass
         # 제발 python3 합시다 좀
         self.needed_data['detail_info_url'] = url
         self.needed_data['company'] = self.ss2str(tables[1].find('td').find('strong').stripped_strings)
@@ -237,6 +254,8 @@ class Worknet(Parser):
     def run(self):
         recruit_url_list = self.get_list()
         for url in recruit_url_list:
+            if db.session.query(exists().where(Job.url == url)).scalar():
+                continue
             self.detail_info(url)
             self.save()
 
