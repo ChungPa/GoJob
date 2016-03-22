@@ -8,7 +8,6 @@ def randomkey(length):
 
 SQLALCHEMY_POOL_RECYCLE = 3600
 SQLALCHEMY_TRACK_MODIFICATIONS = True
-SERVER_NAME = 'localhost:5000'
 SECRET_KEY = randomkey(30)
 DEBUG = True
 
