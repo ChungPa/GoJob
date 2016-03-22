@@ -14,60 +14,58 @@
         <div class="container">
             <h2 class="header text_b">채용정보 </h2>
 
-                  <div class="row">
-                    <div class="col s12 m12">
-                      <div class="card darken-1">
-                          <form method="get">
-                        <div class="card-content white-text">
-                            <span class="card-title black-text">Job Search</span>
-                            <div class="input-field">
-                                <input id="query" type="text" class="validate" name="query" style="color: black">
-                                <label for="query">찾고싶은 직업을 입력하세요</label>
+            <div class="row">
+                <div class="col s12 m12">
+                    <div class="card darken-1">
+                        <form method="get">
+                            <div class="card-content white-text">
+                                <span class="card-title black-text">Job Search</span>
+                                <div class="input-field">
+                                    <input id="query" type="text" class="validate" name="query" style="color: black">
+                                    <label for="query">찾고싶은 직업을 입력하세요</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="card-action">
-                            <button class="btn waves-effect waves-light" type="submit">찾기
-                            </button>
-                        </div>
-                          </form>
-                      </div>
+                            <div class="card-action">
+                                <button class="btn waves-effect waves-light" type="submit">찾기
+                                </button>
+                            </div>
+                        </form>
                     </div>
-                  </div>
+                </div>
+            </div> <!-- .row -->
 
             <div class="row">
-                {% for job in all_job %}
-                    <div class="col s12 m4 l4">
-                        <div class="card">
-                            <div class="card-image waves-effect waves-block waves-light card">
-                                <img class="activator"
-                                     src="{{ url_for('main.static_img', filename='project7.png') }}">
-                            </div>
-                            <div class="card-content">
-                                <span class="card-title activator grey-text text-darken-4">{{ job.title|totitle }}<i
-                                        class="mdi-navigation-more-vert right"></i></span>
-                                <p><a href="{{ job.url }}">JOB Link</a></p>
-                            </div>
-                            <div class="card-reveal">
-                                <span class="card-title grey-text text-darken-4">{{ job.title }}</span>
-                                <br>
-                                <span class="card-title grey-text text-darken-4">회사명 <i
-                                        class="mdi-navigation-close right"></i></span>
-                                <p>{{ job.company.name }}</p>
-                                <span class="card-title grey-text text-darken-4">직종</span>
-                                <p>{{ job.role }}</p>
-                                <span class="card-title grey-text text-darken-4">근무 형태</span>
-                                <p>{{ job.work_style }}</p>
-                                <span class="card-title grey-text text-darken-4">급여</span>
-                                <p>{{ job.pay }}</p>
-                                <span class="card-title grey-text text-darken-4">위치</span>
-                                <p>{{ job.company.location }}</p>
-                                <span class="card-title grey-text text-darken-4">채용 마감</span>
-                                <p>{{ job.end }}</p>
-                            </div>
-                        </div>
-                    </div>
-                {% endfor %}
-            </div>
-        </div>
-    </div>
+                <table>
+                    <thead>
+                    <tr>
+                        <th data-field="id">번호</th>
+                        <th data-field="name">회사</th>
+                        <th data-field="title">공고 내용</th>
+                        <th data-field="role">직종</th>
+                        <th data-field="work_style">근무 형태</th>
+                        <th data-field="pay">급여</th>
+                        <th data-field="title">위치</th>
+                        <th data-field="end">채용 마감일</th>
+
+                    </tr>
+                    </thead>
+
+                    <tbody>
+                    {% for job in all_job %}
+                        <tr>
+                            <td>{{ job.id }}</td>
+                            <td>{{ job.company.name }}</td>
+                            <td><a href="{{ job.url }}">{{ job.title }}</a></td>
+                            <td>{{ job.role }}</td>
+                            <td>{{ job.work_style }}</td>
+                            <td>{{ job.pay }}</td>
+                            <td>{{ job.location }}</td>
+                            <td>{{ job.end }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div> <!-- .row -->
+        </div> <!-- .container -->
+    </div> <!-- section -->
 {% endblock %}
