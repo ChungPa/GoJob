@@ -47,7 +47,7 @@ class Company(db.Model):
 
 class Job(db.Model):
     id = db.Column(db.INTEGER, primary_key=True)
-    title = db.Column(db.String(30), nullable=False, unique=True)
+    title = db.Column(db.String(100), nullable=False, unique=True)
     pay = db.Column(db.String(30), nullable=False)
     work_style = db.Column(db.String(50), nullable=False)
     role = db.Column(db.String(30), nullable=False)

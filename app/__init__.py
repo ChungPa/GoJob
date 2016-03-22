@@ -33,3 +33,11 @@ migrate = Migrate(app, db)
 
 manager = Manager(app)
 manager.add_command('db', MigrateCommand)
+
+
+@app.template_filter('totitle')
+def index_rank(title):
+    if len(unicode(title)) > 13:
+        return title[:10] + '...'
+    else:
+        return title

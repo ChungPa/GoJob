@@ -102,8 +102,12 @@ def saramin_crawling():
     for major in major_list:
         major_cnt = get_cnt_major(major)
 
+        new_major_cnt = major_cnt - Job.query.filter(Job.url.contains('highschool.saramin.co.kr')).count()
+
+        print "Saramin New %d" % new_major_cnt
+
         url = 'http://highschool.saramin.co.kr/zf_user/highschool/jobs/major-list?' \
-              'category=%s&pageCount=%s' % (major, major_cnt)
+              'category=%s&pageCount=%s' % (major, new_major_cnt)
 
         browser.get(url)
         soup = BeautifulSoup(browser.page_source)

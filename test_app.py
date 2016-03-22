@@ -52,22 +52,25 @@ class TemplateTestCase(BaseTestCase):
 
 
 class ModelingTestCase(BaseTestCase):
-    def test_User_Model(self):
+    @staticmethod
+    def test_user_model():
         u = User('name', 'userid', 'userpw', 'fb_id', 'fb_accesstoken')
         db.session.add(u)
         db.session.commit()
 
         assert u in db.session
 
-    def test_Company_Model(self):
+    @staticmethod
+    def test_company_model():
         c = Company('name')
         db.session.add(c)
         db.session.commit()
 
         assert c in db.session
 
-    def test_Job_Model(self):
-        j = Job('title', '1000', 'seoul', 'only weeks', 'major001', datetime.now(), 'url')
+    @staticmethod
+    def test_job_model():
+        j = Job('title', '1000', 'only weeks', 'major001', datetime.now(), 'url')
         db.session.add(j)
         db.session.commit()
 

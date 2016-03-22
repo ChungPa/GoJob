@@ -9,9 +9,8 @@ import requests
 from BeautifulSoup import BeautifulSoup
 from db_manager import add_job_data_db
 from fb_manager import write_new_post
-from datetime import datetime
 from sqlalchemy.exc import IntegrityError
-from app.models import db
+from app.models import *
 
 
 def get_all_job_cnt():
@@ -49,7 +48,7 @@ def get_more_info_job(url):
 
     address_pay = job_condition.findChildren('dd')
 
-    address = " ".join(address_pay[0].attrMap()['title'].split())
+    address = " ".join(address_pay[0].attrMap['title'].split())
     pay = address_pay[1].text.split()[1]
 
     work_type = job_form.findChild('dd').text
@@ -62,6 +61,10 @@ def get_more_info_job(url):
 def get_all_job():
     all_cnt = get_all_job_cnt()
     print "Worknet : %s" % all_cnt
+
+    new_job_cnt = all_cnt - Job.query.filter(Job.url.contains('www.work.go.kr')).count()
+    print "New Worknet Job: %d" % new_job_cnt
+
     r = requests.post('http://www.work.go.kr/empInfo/empInfoSrch/list/dtlEmpSrchList.do',
                       data={
                           'moreCon': "",
@@ -80,7 +83,7 @@ def get_all_job():
                           'preferentialGbn': "all",
                           'x': "30",
                           'y': "18",
-                          'resultCnt': str(all_cnt)
+                          'resultCnt': str(new_job_cnt)
                       })
     soup = BeautifulSoup(r.text)
     all_jobs = soup.find('tbody', {'class': 'form03'}).findChildren('tr')
@@ -91,8 +94,8 @@ def get_all_job():
         company_td, title_td = job.findChildren('td', {'class': 'title'})
         company = company_td.findChild('a').text
         title_root = title_td.findChild('p', {'class': 'link'})
-        title = title_root.attrMap()['title']
-        url = 'http://www.work.go.kr' + title_root.findChild('a').attrMap()['href']
+        title = title_root.attrMap['title']
+        url = 'http://www.work.go.kr' + title_root.findChild('a')._getAttrMap()['href']
 
         end_date_string = job.findChildren('td')[5].text
 
