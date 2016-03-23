@@ -17,7 +17,6 @@
 import json
 
 from db_config import FACEBOOK_ALARM_USER_ACCESSTOKEN, FACEBOOK_PAGE_ID
-from urllib import urlopen
 import requests
 
 
@@ -25,7 +24,10 @@ def get_page_access_token(user_access_token):
     url = 'https://graph.facebook.com/%s?fields=access_token&access_token=%s' % (
         FACEBOOK_PAGE_ID, user_access_token)
 
-    data = json.loads(urlopen(url).read())
+    try:
+        data = requests.get(url).json()
+    except (AttributeError, TypeError):
+        data = requests.get(url).json()
 
     return data['access_token']
 
@@ -39,7 +41,7 @@ def write_new_post(message):
         'message': message
     })
 
-    print r.text
+    print(r.text)
     return json.loads(r.text)['id']
 
 

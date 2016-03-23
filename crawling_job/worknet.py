@@ -3,14 +3,16 @@
 Worknet
 http://www.work.go.kr
 """
-from datetime import datetime
 from re import search
-import requests
 
+import requests
 from bs4 import BeautifulSoup
-from fb_manager import write_new_post
-from app.models import *
 from sqlalchemy.sql import exists
+
+from app.models import *
+from crawling_job.fb_manager import write_new_post
+
+from sqlalchemy.exc import IntegrityError
 
 
 class Parser:
@@ -34,12 +36,12 @@ class Parser:
             html = res.text
 
             with open(html_fn, 'w') as fp:
-                fp.write(html.encode('utf-8'))
+                fp.write(html)
 
         return BeautifulSoup(html, "html.parser")
 
     def ss2str(self, stripped_strings):
-        return list(stripped_strings)[0]
+        return str(list(stripped_strings)[0])
 
     def error_handler(self, soup, msg):
         """
@@ -136,11 +138,11 @@ class Worknet(Parser):
             end_data = self.ss2str(col_list[5].stripped_strings).encode('utf-8')
 
             try:
-                end_data = search(r'(\d\d-\d\d-\d\d)', end_data).group(0)
+                end_data = search(r'(\d\d-\d\d-\d\d)', end_data.decode('utf-8')).group(0)
                 self.needed_data['end_date'] = datetime.strptime(end_data, '%y-%m-%d')
             except AttributeError:
                 pass
-            print self.needed_data['end_date']
+            print(self.needed_data['end_date'])
             recruit_url_list.append(detail_info_url)
 
         return recruit_url_list
@@ -205,13 +207,22 @@ class Worknet(Parser):
             tr_list = list(soup.find('tbody', {'class': 'form05'}).find_all('tr'))
             due_date = self.ss2str(tr_list[4].find('td').stripped_strings)
         try:
+            due_date = self.needed_data['end_date'] = datetime.strptime(due_date, '%Y년 %m월 %일')
+        except ValueError:  # 채용시까지.. TODO: 다시짜야됨
+            pass
+        except UnicodeDecodeError:
             due_date = due_date.replace("년", "/")
             due_date = due_date.replace("월", "/")
             due_date = due_date.replace("일", "")
             self.needed_data['end_date'] = datetime.strptime(due_date, '%Y/ %m/ %d')
-        except UnicodeDecodeError:  # 채용시까지.. TODO: 다시짜야됨
-            pass
-        # 제발 python3 합시다 좀
+        except TypeError:
+            """
+            File "/home/kcrong/project/GoJob/crawling_job/worknet.py", line 208, in detail_info
+                due_date = self.needed_data['end_date'] = datetime.strptime(due_date, '%Y년 %m월 %일')
+                TypeError: must be str, not bytes
+            """
+            self.needed_data['end_date'] = datetime.strptime(due_date.decode('utf-8'), "%Y년 %m월 %d일")
+
         self.needed_data['detail_info_url'] = url
         self.needed_data['company'] = self.ss2str(tables[1].find('td').find('strong').stripped_strings)
 
@@ -240,12 +251,19 @@ class Worknet(Parser):
 
         job = Job(title, pay, work_type, role, end_date, detail_info_url)
         company.job.append(job)
+        #
 
         db.session.add(job)
-        db.session.commit()
+
+        try:
+            db.session.commit()
+        except IntegrityError:
+            db.session.rollback()
+            # TODO: 중복되는 채용정보일 경우?
+            return
 
         content = u"""%s\n%s\n회사명: %s\n위치: %s\n급여: %s\n근무형태: %s\n마감일자: %s\n신청링크: %s""" % (
-            role, title, company, location, pay, work_type, end_date, detail_info_url)
+            role, title, company.name, location, pay, work_type, end_date, detail_info_url)
 
         fb_id = write_new_post(content)  # TODO: http://docs.sqlalchemy.org/en/latest/orm/events.html 이렇게 리팩토링
         job.fb_article_id = fb_id
