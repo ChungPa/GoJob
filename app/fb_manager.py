@@ -1,9 +1,7 @@
 # -*-coding: utf-8 -*-
-import json
-
+import requests
 from flask_oauth import OAuth
 from flask import session
-from urllib2 import urlopen
 from config import FACEBOOK_APP_ID, FACEBOOK_APP_SECRET
 
 oauth = OAuth()
@@ -17,7 +15,7 @@ def check_sunrin(school):
 def get_user_school(access_token):
     url = 'https://graph.facebook.com/me?access_token=%s&fields=education' % access_token
 
-    json_school_data = json.loads(urlopen(url).read())
+    json_school_data = requests.get(url).json()
 
     try:
         return json_school_data['education'][0]['school']['name']

@@ -1,8 +1,7 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
-import json
 import os.path
-from urllib.request import urlopen
+import requests
 
 from flask import render_template, send_from_directory, redirect, url_for
 
@@ -10,8 +9,7 @@ from . import main_blueprint
 
 
 def get_commit_cnt():
-
-    user_data = json.loads(urlopen('https://api.github.com/repos/ChungPa/GoJob/contributors').read())
+    user_data = requests.get('https://api.github.com/repos/ChungPa/GoJob/contributors').json()
     contributors = dict((user['login'], user['contributions']) for user in user_data)
 
     return contributors

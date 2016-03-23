@@ -17,7 +17,6 @@
 import json
 
 from db_config import FACEBOOK_ALARM_USER_ACCESSTOKEN, FACEBOOK_PAGE_ID
-from urllib.request import urlopen
 import requests
 
 
@@ -26,9 +25,9 @@ def get_page_access_token(user_access_token):
         FACEBOOK_PAGE_ID, user_access_token)
 
     try:
-        data = json.loads(urlopen(url).read())
+        data = requests.get(url).json()
     except (AttributeError, TypeError):
-        data = json.loads(urlopen(url).read().decode('utf-8'))
+        data = requests.get(url).json()
 
     return data['access_token']
 
