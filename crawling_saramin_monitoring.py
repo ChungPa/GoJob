@@ -11,7 +11,7 @@
 
 from datetime import date
 from selenium import webdriver
-from BeautifulSoup import BeautifulSoup
+from bs4 import BeautifulSoup
 
 browser = webdriver.PhantomJS()
 
@@ -40,14 +40,14 @@ def get_cnt_major(major):
     soup = BeautifulSoup(browser.page_source)
 
     tmp = soup.find('div', {'class': 'panel_bottom'}).findChild('div', {'class': 'text01'}).first().text
-    print "%s is %s" % (major, tmp)
+    print("%s is %s" % (major, tmp))
     return tmp
 
 def saramin_crawling():
-    major_list = ['major00' + str(_) for _ in xrange(1, 10)]
+    major_list = ['major00' + str(_) for _ in range(1, 10)]
 
     for major in major_list:
-        print "\n\n"
+        print("\n\n")
         major_cnt = get_cnt_major(major)
         url = 'http://highschool.saramin.co.kr/zf_user/highschool/jobs/major-list?' \
               'category=%s&pageCount=%s' % (major, '5')
@@ -82,11 +82,11 @@ def saramin_crawling():
                 # 마감이 하루 남은 경우, 사이트에 날짜가 아닌 '내일마감' 이라고 뜸. 별도 처리가 필요함.
                 end_date = date(today.year, today.month, today.day + 1)
 
-            print "title: %s\ncompany: %s\ndate: %s\nurl: %s" % (title, company, end_date, url)
+            print("title: %s\ncompany: %s\ndate: %s\nurl: %s" % (title, company, end_date, url))
 
     return True
 
 
 if __name__ == '__main__':
     saramin_crawling()
-    print "Done."
+    print("Done.")
