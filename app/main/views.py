@@ -25,7 +25,7 @@ def index():
 
 @main_blueprint.route('/works')
 def works():
-    return redirect(url_for('job.job_list'))
+    return redirect(url_for('myjob.job_list'))
 
 
 @main_blueprint.route('/aboutus')
