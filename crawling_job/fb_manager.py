@@ -25,7 +25,10 @@ def get_page_access_token(user_access_token):
     url = 'https://graph.facebook.com/%s?fields=access_token&access_token=%s' % (
         FACEBOOK_PAGE_ID, user_access_token)
 
-    data = json.loads(urlopen(url).read())
+    try:
+        data = json.loads(urlopen(url).read())
+    except (AttributeError, TypeError):
+        data = json.loads(urlopen(url).read().decode('utf-8'))
 
     return data['access_token']
 
