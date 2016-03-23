@@ -11,24 +11,25 @@ from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
 
 app = Flask(__name__)
-app.config.from_pyfile('../config.py')
+
 db = SQLAlchemy(app)
 
 
 def setting_app():
     sys.path.append(app.root_path)
 
-    from job import job_blueprint
-    from main import main_blueprint
+    from app.job import job_blueprint
+    from app.main import main_blueprint
 
     app.register_blueprint(main_blueprint)
     app.register_blueprint(job_blueprint, url_prefix='/job')
 
+    app.config.from_pyfile('../config.py')
+
     return app
 
 
-import models
-from models import *
+from app.models import *
 
 migrate = Migrate(app, db)
 
@@ -43,7 +44,7 @@ admin.add_view(ModelView(Job, db.session))
 
 @app.template_filter('totitle')
 def index_rank(title):
-    if len(unicode(title)) > 13:
+    if len(title) > 13:
         return title[:10] + '...'
     else:
         return title
