@@ -31,6 +31,7 @@ def setting_app():
 
     return app
 
+app = setting_app()
 
 from app.models import *
 
