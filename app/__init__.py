@@ -1,6 +1,9 @@
 #!/usr/bin/env python
 # -*- coding:utf-8 -*-
 import sys
+import pymysql
+# using mysql-python for python3
+pymysql.install_as_MySQLdb()
 
 from flask import Flask
 from flask.ext.migrate import MigrateCommand, Migrate
