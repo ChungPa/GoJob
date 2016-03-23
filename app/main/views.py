@@ -2,7 +2,7 @@
 # -*- coding:utf-8 -*-
 import json
 import os.path
-from urllib2 import urlopen
+from urllib.request import urlopen
 
 from flask import render_template, send_from_directory, redirect, url_for
 

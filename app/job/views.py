@@ -4,7 +4,7 @@
 from flask import render_template, request
 
 from . import job_blueprint
-from ..models import Job
+from app.models import Job
 
 from werkzeug.exceptions import BadRequest
 
