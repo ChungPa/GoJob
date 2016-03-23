@@ -11,8 +11,8 @@ from selenium import webdriver
 from bs4 import BeautifulSoup
 from sqlalchemy.exc import IntegrityError
 
-from db_manager import add_job_data_db
-from fb_manager import write_new_post
+from crawling_job.db_manager import add_job_data_db
+from crawling_job.fb_manager import write_new_post
 from platform import system
 
 browser = webdriver.PhantomJS()
@@ -100,14 +100,14 @@ def get_job_info(url):
 
 
 def saramin_crawling():
-    major_list = ['major00' + str(_) for _ in xrange(1, 10)]
+    major_list = ['major00' + str(_) for _ in range(1, 10)]
 
     for major in major_list:
         major_cnt = get_cnt_major(major)
 
         new_major_cnt = major_cnt - Job.query.filter(Job.url.contains('highschool.saramin.co.kr')).count()
 
-        print "Saramin New %d" % new_major_cnt
+        print("Saramin New %d" % new_major_cnt)
 
         url = 'http://highschool.saramin.co.kr/zf_user/highschool/jobs/major-list?' \
               'category=%s&pageCount=%s' % (major, new_major_cnt)
@@ -164,11 +164,11 @@ def saramin_crawling():
 
                 job_db.fb_article_id = fb_id
                 db.session.commit()
-                print "Uploaded"
+                print("Uploaded")
 
     return True
 
 
 if __name__ == '__main__':
     saramin_crawling()
-    print "Done."
+    print("Done.")

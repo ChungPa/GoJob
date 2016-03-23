@@ -17,7 +17,7 @@
 import json
 
 from db_config import FACEBOOK_ALARM_USER_ACCESSTOKEN, FACEBOOK_PAGE_ID
-from urllib import urlopen
+from urllib.request import urlopen
 import requests
 
 
@@ -39,7 +39,7 @@ def write_new_post(message):
         'message': message
     })
 
-    print r.text
+    print(r.text)
     return json.loads(r.text)['id']
 
 

@@ -3,14 +3,14 @@
 Worknet
 http://www.work.go.kr
 """
-from datetime import datetime
 from re import search
-import requests
 
+import requests
 from bs4 import BeautifulSoup
-from fb_manager import write_new_post
-from app.models import *
 from sqlalchemy.sql import exists
+
+from app.models import *
+from crawling_job.fb_manager import write_new_post
 
 
 class Parser:
@@ -34,7 +34,7 @@ class Parser:
             html = res.text
 
             with open(html_fn, 'w') as fp:
-                fp.write(html.encode('utf-8'))
+                fp.write(html)
 
         return BeautifulSoup(html, "html.parser")
 
@@ -136,11 +136,11 @@ class Worknet(Parser):
             end_data = self.ss2str(col_list[5].stripped_strings).encode('utf-8')
 
             try:
-                end_data = search(r'(\d\d-\d\d-\d\d)', end_data).group(0)
+                end_data = search(r'(\d\d-\d\d-\d\d)', end_data.decode('utf-8')).group(0)
                 self.needed_data['end_date'] = datetime.strptime(end_data, '%y-%m-%d')
             except AttributeError:
                 pass
-            print self.needed_data['end_date']
+            print(self.needed_data['end_date'])
             recruit_url_list.append(detail_info_url)
 
         return recruit_url_list
