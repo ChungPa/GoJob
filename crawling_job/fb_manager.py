@@ -42,8 +42,11 @@ def write_new_post(message):
     })
 
     print(r.text)
-    return json.loads(r.text)['id']
-
+    try:
+        return json.loads(r.text)['id']
+    except KeyError:
+        print("DUP article!")
+        pass
 
 if __name__ == '__main__':
     write_new_post("새로운 취직정보!<br>sd\nsdf")
