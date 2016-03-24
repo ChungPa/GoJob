@@ -45,8 +45,7 @@ def write_new_post(message):
     try:
         return json.loads(r.text)['id']
     except KeyError:
-        # 이전 게시물과 동일한 내용의 게시물을 업로드한 경우
-        # TODO: EDIT
+        print("DUP article!")
         pass
 
 if __name__ == '__main__':
