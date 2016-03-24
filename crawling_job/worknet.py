@@ -7,12 +7,10 @@ from re import search, findall
 
 import requests
 from bs4 import BeautifulSoup
+from sqlalchemy.exc import IntegrityError
 from sqlalchemy.sql import exists
 
 from app.models import *
-from crawling_job.fb_manager import write_new_post
-
-from sqlalchemy.exc import IntegrityError
 
 
 class Parser:
@@ -275,15 +273,6 @@ class Worknet(Parser):
             db.session.commit()
         except IntegrityError:
             db.session.rollback()
-            # TODO: 중복되는 채용정보일 경우?
-            return
-
-        content = u"""%s\n%s\n회사명: %s\n위치: %s\n급여: %s\n근무형태: %s\n마감일자: %s\n신청링크: %s""" % (
-            role, title, company.name, location, pay, work_type, end_date, detail_info_url)
-
-        fb_id = write_new_post(content)  # TODO: http://docs.sqlalchemy.org/en/latest/orm/events.html 이렇게 리팩토링
-        job.fb_article_id = fb_id
-        db.session.commit()
 
     def run(self):
         recruit_url_list = self.get_list()

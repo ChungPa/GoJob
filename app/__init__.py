@@ -2,6 +2,7 @@
 # -*- coding:utf-8 -*-
 import sys
 import pymysql
+
 # using mysql-python for python3
 pymysql.install_as_MySQLdb()
 
@@ -9,9 +10,12 @@ from flask import Flask
 from flask.ext.migrate import MigrateCommand, Migrate
 from flask.ext.script import Manager
 from flask.ext.sqlalchemy import SQLAlchemy
+from flask.ext.sqlalchemy import event
 
 from flask_admin import Admin
 from flask_admin.contrib.sqla import ModelView
+
+from crawling_job.fb_manager import write_new_post
 
 app = Flask(__name__)
 
@@ -30,6 +34,7 @@ def setting_app():
     app.config.from_pyfile('../config.py')
 
     return app
+
 
 app = setting_app()
 
@@ -52,3 +57,15 @@ def index_rank(title):
         return title[:10] + '...'
     else:
         return title
+
+
+@event.listens_for(Job, 'after_insert')
+def receive_after_insert(mapper, connection, target):
+    content = u"""%s\n%s\n회사명: %s\n급여: %s\n근무형태: %s\n마감일자: %s\n신청링크: %s""" % (
+        target.role, target.title, target.company.name, target.pay, target.work_style, target.end, target.url)
+
+    fb_id = write_new_post(content)
+    target.fb_article_id = fb_id
+
+
+event.listen(Job, 'before_insert', receive_after_insert)
