@@ -64,5 +64,5 @@ def receive_after_insert(mapper, connection, target):
     content = u"""%s\n%s\n회사명: %s\n급여: %s\n근무형태: %s\n마감일자: %s\n신청링크: %s""" % (
         target.role, target.title, target.company.name, target.pay, target.work_style, target.end, target.url)
 
-    fb_id = write_new_post(content)
-    target.fb_article_id = fb_id
+    write_new_post(content)
+
