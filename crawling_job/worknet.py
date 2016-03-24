@@ -3,7 +3,7 @@
 Worknet
 http://www.work.go.kr
 """
-from re import search
+from re import search, findall
 
 import requests
 from bs4 import BeautifulSoup
@@ -77,6 +77,17 @@ class Parser:
 
 
 class Worknet(Parser):
+    pay_word = {
+        '연봉': lambda x: x // 12,
+        '월급': lambda x: x,
+        '시급': lambda x: (x * 7 * 5 * 4) // 10000,  # 10000로 나눠야함. 만원으로 나타내기 위함.
+    }
+
+    @classmethod
+    def paytoint(cls, pay_string):
+        pay = findall('\d+', pay_string)[0]
+        return cls.pay_word[pay_string[:2]](int(pay))
+
     def __init__(self):
         # all_cnt = get_all_job_cnt()
         # print "Worknet : %s" % all_cnt
@@ -182,7 +193,8 @@ class Worknet(Parser):
                 continue
         try:
             self.needed_data['location'] = location
-            self.needed_data['pay'] = pay  # 정규식으로 숫자만
+            self.needed_data['pay'] = Worknet.paytoint(pay)
+
         except NameError:
             self.error_handler(soup, 'Summary nono.. omg')
 
@@ -221,7 +233,11 @@ class Worknet(Parser):
                 due_date = self.needed_data['end_date'] = datetime.strptime(due_date, '%Y년 %m월 %일')
                 TypeError: must be str, not bytes
             """
-            self.needed_data['end_date'] = datetime.strptime(due_date.decode('utf-8'), "%Y년 %m월 %d일")
+            try:
+                self.needed_data['end_date'] = datetime.strptime(due_date.decode('utf-8'), "%Y년 %m월 %d일")
+            except ValueError:
+                # ValueError: time data '2016-03-25' does not match format '%Y년 %m월 %d일'
+                self.needed_data['end_date'] = datetime.strptime(due_date.decode('utf-8'), "%Y-%m-%d")
 
         self.needed_data['detail_info_url'] = url
         self.needed_data['company'] = self.ss2str(tables[1].find('td').find('strong').stripped_strings)
