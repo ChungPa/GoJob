@@ -66,6 +66,3 @@ def receive_after_insert(mapper, connection, target):
 
     fb_id = write_new_post(content)
     target.fb_article_id = fb_id
-
-
-event.listen(Job, 'before_insert', receive_after_insert)
