@@ -260,12 +260,11 @@ class Worknet(Parser):
         work_type = self.needed_data['work_type']
         end_date = self.needed_data['end_date']
         detail_info_url = self.needed_data['detail_info_url']
-        location = self.needed_data['location']
+        # location = self.needed_data['location']
         company = get_or_create(db.session, Company, name=company)
 
         job = Job(title, pay, work_type, role, end_date, detail_info_url)
         company.job.append(job)
-        #
 
         db.session.add(job)
 
