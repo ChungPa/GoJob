@@ -42,8 +42,12 @@ def write_new_post(message):
     })
 
     print(r.text)
-    return json.loads(r.text)['id']
-
+    try:
+        return json.loads(r.text)['id']
+    except KeyError:
+        # 이전 게시물과 동일한 내용의 게시물을 업로드한 경우
+        # TODO: EDIT
+        pass
 
 if __name__ == '__main__':
     write_new_post("새로운 취직정보!<br>sd\nsdf")
