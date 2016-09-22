@@ -104,22 +104,13 @@ class FacebookTestCase(BaseTestCase):
         self.assertNotEqual(school_name, None)
 
     def test_check_sunrin(self):
-        result = check_sunrin(u'Sunrin High School')
+        
+        self.assertEqual(check_sunrin(u'Sunrin High School'), True)
 
-        self.assertEqual(result, True)
+        self.assertEqual(check_sunrin(u'선린인터넷고등학교'), True)
 
-        result = check_sunrin(u'선린인터넷고등학교')
+        self.assertEqual(check_sunrin(u'알파고등학교'), False)
 
-        self.assertEqual(result, True)
+        self.assertEqual(check_sunrin(u'SunRin High School'), True)
 
-        result = check_sunrin(u'알파고등학교')
-
-        self.assertEqual(result, False)
-
-        result = check_sunrin(u'SunRin High School')
-
-        self.assertEqual(result, True)
-
-        result = check_sunrin(u'Super High School')
-
-        self.assertEqual(result, False)
+        self.assertEqual(check_sunrin(u'Super High School'), False)
