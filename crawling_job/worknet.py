@@ -95,24 +95,44 @@ class Worknet(Parser):
         self.new_job_cnt = 7775
         self.domain = 'http://www.work.go.kr'
         self.request_data = {
-            'moreCon': "",
-            'tabMode': "",
-            'siteClcd': "all",
-            'keyword': "",
-            'region': "",
-            'regionNm': "",
-            'occupation': "",
-            'occupationNm': "",
-            'payGbn': "noPay",
-            'minPay': "",
-            'maxPay': "",
-            'academicGbn': "00,01,02,03",
-            'careerTypes': "N",
-            'preferentialGbn': "all",
-            'x': "30",
-            'y': "18",
-            'resultCnt': str(self.new_job_cnt)
+            "moreCon": "",
+            "payGbn":"",
+            "listCookieInfo":"DTL",
+            "staArea":"",
+            "indArea":"",
+            "staAreaLineInfo1":11000,
+            "staAreaLineInfo2":1,
+            "templateInfo":"",
+            "codeDepth1Info":"",
+            "codeDepth2Info":"",
+            "templateDepthNoInfo":"",
+            "templateDepthNmInfo":"",
+            "benefitSrchAndOr":"",
+            "keywordJobCd":"",
+            "keywordJobCdSeqNo":"",
+            "keywordEtcYn":"",
+            "exJobsCd":"",
+            "keywordFlag":"",
+            "keyword":"",
+            "region":11000,
+            "regionNm":"서울",
+            "enterPriseGbn":"all",
+            "careerTypes":"",
+            "academicGbn":"03",
+            "preferentialGbn":"all",
+            "empTpGbcd":1,
+            "cloDateStdt":"",
+            "cloDateEndt":"",
+            "cloTermSearchGbn":"all",
+            "regDateStdt":"",
+            "regDateEndt":"",
+            "termSearchGbn":"all",
+            "siteClcd":"all",
+            "resultCnt":10,
+            "sortOrderBy":"DESC",
+            "sortField":"DATE",
         }
+
         self.needed_data = {
             'company': '',
             'detail_info_url': '',
@@ -131,7 +151,7 @@ class Worknet(Parser):
         """
         recruit_url_list = []
         url = '{}/empInfo/empInfoSrch/list/dtlEmpSrchList.do'.format(self.domain)
-        soup = self.make_soup('get', url, data=self.request_data)
+        soup = self.make_soup('post', url, data=self.request_data)
         all_jobs = soup.find('tbody', {'class': 'form03'})
 
         for job_tr in all_jobs.findAll('tr'):
