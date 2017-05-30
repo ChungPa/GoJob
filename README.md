@@ -8,11 +8,7 @@
 사용하는 브랜치 목록은 아래와 같습니다.
 - Master  
     > 실질적으로 배포가 이루어지는 코드가 담기는 브랜치.
-    >> Push branch: HotFix, Develop
-    
-- Develop  
-    > 개발 중인 코드가 담기는 브랜치.  
-    >> Push branch: Functions, HotFix
+    >> Push branch: HotFix, Functions
     
 - HotFix  
     > Pull request 에서 검출되지 않은 에러가 나왔을 경우, 응급 패치용으로 사용하는 브랜치.  
@@ -41,7 +37,7 @@
     1차 리뷰를 받고 수정 후 다시 리뷰를 요청하는 상태일 경우 사용  
 
 ## Merge Rule
-- Master, Develop  
+- Master  
     모든 Reviewer 에게 Approve.  
     (단, From HotFix 일 때는 그냥 머지 ㄲ)
     
