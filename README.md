@@ -47,26 +47,6 @@
     
 - HotFix, Functions
     리뷰 없이 Push 가능
-    
-
-## Commit Message Naming Rule
-(이건 처음에 너무 불편해서 필요할지 잘할 수 있을지 모르겠음..)
-
-예시) `ENH: Add Saramin Crawler`
-
-사용하는 헤더들은 아래와 같습니다.
-- ENH  
-    기능 개선 커밋일 경우 사용
-    
-- FIX  
-    에러 수정 커밋일 경우 사용
-    
-- PEP  
-    PEP 관련 커밋일 때, (알고리즘 상 변화가 아에 없는, 순수한 가독성 커밋일 때)
-    
-헤더 외에 커밋 메세지 규약은  
-https://item4.github.io/2016-11-01/How-to-Write-a-Git-Commit-Message/  
-얘로 따라가고 싶음
 
 ## Deploy System (DevOps?)
 - Circle CI (testing, deploy) --> 사실 이거 밖에 안써봄 (테스트부터 배포까지)  
