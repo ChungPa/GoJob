@@ -14,6 +14,6 @@ oauth2==1.9.0.post1
 PyMySQL==0.7.2
 python-editor==0.5
 SQLAlchemy==1.0.12
-urllib3==1.14
+urllib3==1.26.5
 Werkzeug==0.11.5
 WTForms==2.1
